@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<script>
+	if (!Object.assign || typeof Promise === 'undefined') {
+		document.write('<script src="//cdnjs.cloudflare.com/ajax/libs/core-js/2.4.1/core.min.js"></'+'script>');
+		document.write('<script src="//cdnjs.cloudflare.com/ajax/libs/dom4/1.8.3/dom4.js"></'+'script>');
+	}
+	</script>
+</head>
+<body>
+	<div id="root"></div>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/react/16.2.0/umd/react.development.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/react-dom/16.2.0/umd/react-dom.development.js"></script>
+	<script src="bundle.js"></script>
+</body>
+</html>

@@ -1,0 +1,17 @@
+{
+  "name": "example",
+  "version": "1.0.0",
+  "description": "The classic Todo app done using Haxe React and a Flux-like store.",
+  "main": "index.js",
+  "bin": {
+    "example": "bin/index.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "react-beautiful-dnd": "^13.1.1"
+  }
+}

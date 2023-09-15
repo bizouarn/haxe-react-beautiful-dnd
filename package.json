@@ -1,0 +1,15 @@
+{
+  "name": "haxe-react-beautiful-dnd",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/react-beautiful-dnd": "^13.1.4",
+    "react-beautiful-dnd": "^13.1.1"
+  }
+}
