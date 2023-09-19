@@ -382,6 +382,25 @@ HxOverrides.now = function() {
 };
 var React_Component = require("react").Component;
 var App = function(props) {
+	this.getListStyle = function(isDraggingOver) {
+		return { background : isDraggingOver ? "lightblue" : "lightgrey", padding : "5px", paddingBottom : isDraggingOver ? "70px" : "5px", width : 250};
+	};
+	this.getItemStyle = function(isDragging,draggableStyle) {
+		var style = { "userSelect" : "none", "padding" : "5px", "margin" : "0 0 5px 0", "background" : isDragging ? "lightgreen" : "grey"};
+		var res = Reflect.copy(style);
+		console.log("src/Main.hx:41:",res);
+		var _g = 0;
+		var _g1 = Reflect.fields(draggableStyle);
+		while(_g < _g1.length) {
+			var f = _g1[_g];
+			++_g;
+			console.log("src/Main.hx:43:",f);
+			res[f] = Reflect.field(draggableStyle,f);
+		}
+		console.log("src/Main.hx:46:",res);
+		console.log("src/Main.hx:47:","===");
+		return res;
+	};
 	React_Component.call(this,props);
 	var source = ["TEST 1","TEST 2","TEST 3","TEST 4","TEST 5","TEST 6"];
 	this.state = { source : source};
@@ -403,7 +422,11 @@ App.prototype = $extend(React_Component.prototype,{
 			_gthis.setState({ source : _gthis.state.source});
 		};
 		var renderItem = function(provided,snapshot,item) {
-			return React.createElement("div",Object.assign({ },provided.dragHandleProps,provided.draggableProps,{ ref : provided.innerRef}),React.createElement("p",{ },item));
+			var provided1 = provided.dragHandleProps;
+			var provided2 = provided.draggableProps;
+			var provided3 = provided.innerRef;
+			var renderItem = _gthis.getItemStyle(snapshot.isDragging,provided.draggableProps.style);
+			return React.createElement("div",Object.assign({ },provided1,provided2,{ ref : provided3, style : renderItem}),React.createElement("p",{ },item));
 		};
 		var renderDrag = function(item,source) {
 			var index = 0;
@@ -416,34 +439,37 @@ App.prototype = $extend(React_Component.prototype,{
 					break;
 				}
 			}
-			var id = uuid_Uuid.nanoId();
 			return React.createElement(react_$beautiful_$dnd_Draggable,{ key : item, index : index, draggableId : item},function(provided,snapshot) {
 				return renderItem(provided,snapshot,item);
 			});
 		};
 		var renderList = function(provided,snapshot,source) {
-			return React.createElement("div",Object.assign({ },provided.droppableProps,{ ref : provided.innerRef}),source.map(function(item) {
+			var provided1 = provided.droppableProps;
+			var provided2 = provided.innerRef;
+			var renderList = _gthis.getListStyle(snapshot.isDraggingOver);
+			return React.createElement("div",Object.assign({ },provided1,{ ref : provided2, style : renderList}),source.map(function(item) {
 				return renderDrag(item,source);
 			}));
 		};
 		var renderDragDropContext = function(source) {
-			return React.createElement(react_$beautiful_$dnd_DragDropContext,{ onDragEnd : onDragEnd},React.createElement(react_$beautiful_$dnd_Droppable,{ droppableId : "droppable"},function(provided,snapshot) {
+			return React.createElement(react_$beautiful_$dnd_DragDropContext,{ onDragEnd : onDragEnd},React.createElement(react_$beautiful_$dnd_Droppable,{ key : _gthis.props.id, droppableId : _gthis.props.id},function(provided,snapshot) {
 				return renderList(provided,snapshot,source);
 			}));
 		};
-		var tmp;
+		var tmp = React.createElement("h1",{ },this.props.id);
+		var tmp1;
 		if(this.state.source != null) {
 			return renderDragDropContext(this.state.source);
 		} else {
-			tmp = false;
+			tmp1 = false;
 		}
-		return React.createElement("div",{ },tmp);
+		return React.createElement("div",{ },tmp,tmp1);
 	}
 });
 var Main = function() { };
 Main.__name__ = true;
 Main.main = function() {
-	ReactDOM.render(React.createElement(App,{ }),window.document.getElementById("root"));
+	ReactDOM.render(React.createElement(App,{ id : "droppable"}),window.document.getElementById("root"));
 };
 Math.__name__ = true;
 var Reflect = function() { };
@@ -466,6 +492,20 @@ Reflect.fields = function(o) {
 		}
 	}
 	return a;
+};
+Reflect.copy = function(o) {
+	if(o == null) {
+		return null;
+	}
+	var o2 = { };
+	var _g = 0;
+	var _g1 = Reflect.fields(o);
+	while(_g < _g1.length) {
+		var f = _g1[_g];
+		++_g;
+		o2[f] = Reflect.field(o,f);
+	}
+	return o2;
 };
 var Std = function() { };
 Std.__name__ = true;

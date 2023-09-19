@@ -13,14 +13,13 @@ import react_beautiful_dnd.DropResult;
 import uuid.Uuid;
 
 private typedef Props = {
-  var itemSource: Array<String>;
+  var id: String;
 }
 private typedef State = {
   var source: Array<String>;
 }
 
 class App extends react.ReactComponentOf<Props, State> {
-
   public function new(props: Props) {
     super(props);
     var source = ["TEST 1", "TEST 2", "TEST 3", "TEST 4", "TEST 5", "TEST 6"];
@@ -28,6 +27,33 @@ class App extends react.ReactComponentOf<Props, State> {
       source: source
     };
   }
+
+  var getItemStyle = (isDragging:Bool, draggableStyle:Dynamic) -> {
+    var style  = {
+      // quelques styles de base pour améliorer l'apparence des éléments
+      "userSelect": "none",
+      "padding": "5px",
+      "margin": '0 0 5px 0',
+      // changer la couleur de fond en cas de glisser-déposer
+      "background": (isDragging ? "lightgreen" : "grey")
+    };
+    var res = Reflect.copy(style);
+    trace(res);
+    for(f in Reflect.fields(draggableStyle)) {
+      trace(f);
+      Reflect.setField(res,f,Reflect.field(draggableStyle,f));
+    }
+    trace(res);
+    trace("===");
+    return res;
+  };
+  
+  var getListStyle = (isDraggingOver:Bool) -> ({
+    background: isDraggingOver ? "lightblue" : "lightgrey",
+    padding: "5px",
+    paddingBottom: isDraggingOver ? "70px" : "5px",
+    width: 250
+  });
 
   override function render() {
     var onDragEnd = function (result: DropResult) {
@@ -52,6 +78,7 @@ class App extends react.ReactComponentOf<Props, State> {
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
+          style={getItemStyle(snapshot.isDragging, provided.draggableProps.style)}
         >
           <p>{item}</p>
         </div>
@@ -66,7 +93,7 @@ class App extends react.ReactComponentOf<Props, State> {
           break;
         }
       }
-      var id = Uuid.nanoId();
+
       return jsx(
         <Draggable key={item} draggableId={item} index={index}>
           {(provided, snapshot) -> renderItem(provided, snapshot, item)}
@@ -79,6 +106,7 @@ class App extends react.ReactComponentOf<Props, State> {
         <div
           {...provided.droppableProps}
           ref={provided.innerRef}
+          style={getListStyle(snapshot.isDraggingOver)}
         >
           {source.map((item) -> renderDrag(item, source))}
         </div>
@@ -88,7 +116,7 @@ class App extends react.ReactComponentOf<Props, State> {
     var renderDragDropContext = function (source) {
       return jsx(
         <DragDropContext onDragEnd={onDragEnd}>
-          <Droppable droppableId="droppable">
+          <Droppable key={props.id} droppableId={props.id}>
             {(provided, snapshot) -> renderList(provided, snapshot, source)}
           </Droppable>
         </DragDropContext>
@@ -96,13 +124,15 @@ class App extends react.ReactComponentOf<Props, State> {
     }
 
     return jsx(
-      <div>{state.source != null && (return renderDragDropContext(state.source));}</div>
+      <div>
+        {state.source != null && (return renderDragDropContext(state.source));}
+      </div>
     );
   }
 }
 
 class Main {
   public static function main() {
-    ReactDOM.render(jsx('<App/>'), Browser.document.getElementById('root'));
+    ReactDOM.render(jsx('<App id="droppable"/>'), Browser.document.getElementById('root'));
   }
 }
