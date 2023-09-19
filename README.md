@@ -9,8 +9,9 @@ Generated with [dts2hx](https://github.com/haxiomic/dts2hx).
 Please note that this project is a work in progress, and there is still much work to be done. Currently, some features may not be fully functional or may be missing.
 
 ## Example
+[![Github pages](https://github.com/bizouarn/haxe-react-beautiful-dnd/actions/workflows/gh-pages.yml/badge.svg)](https://github.com/bizouarn/haxe-react-beautiful-dnd/actions/workflows/gh-pages.yml)  
 
-A simple example can be found in the `example` directory.
+A simple example can be found in the [example](https://git.bizouarn.com/haxe-react-beautiful-dnd/) directory.
 
 ## Contributing
 
