@@ -1,2 +1,4 @@
 -lib react
 -lib react-types
+-lib html-entities
+-lib css-types

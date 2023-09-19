@@ -1,6 +1,8 @@
 -lib react
 -lib react-types
 -lib react-beautiful-dnd
+-lib html-entities
+-lib css-types
 
 -D react_hot
 -debug
