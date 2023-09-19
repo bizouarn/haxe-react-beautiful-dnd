@@ -430,22 +430,6 @@ StringTools.startsWith = function(s,start) {
 };
 var React_Component = require("react").Component;
 var components_App = function(props) {
-	this.getListStyle = function(isDraggingOver) {
-		return { background : isDraggingOver ? "lightblue" : "lightgrey", padding : "5px", paddingBottom : isDraggingOver ? "70px" : "5px", width : 250};
-	};
-	this.getItemStyle = function(isDragging,draggableStyle) {
-		var style = { "userSelect" : "none", "padding" : "5px", "margin" : "0 0 5px 0", "background" : isDragging ? "lightgreen" : "grey"};
-		var res = Reflect.copy(style);
-		var _g = 0;
-		var _g1 = Reflect.fields(draggableStyle);
-		while(_g < _g1.length) {
-			var f = _g1[_g];
-			++_g;
-			console.log("src/components/App.hx:41:",f);
-			res[f] = Reflect.field(draggableStyle,f);
-		}
-		return res;
-	};
 	React_Component.call(this,props);
 	var source = ["TEST 1","TEST 2","TEST 3","TEST 4","TEST 5","TEST 6"];
 	this.state = { source : source};
@@ -466,39 +450,77 @@ components_App.prototype = $extend(React_Component.prototype,{
 			_gthis.state.source.splice(indexDestination,0,elem);
 			_gthis.setState({ source : _gthis.state.source});
 		};
-		var renderItem = function(provided,snapshot,item) {
+		var renderItem = function(item,source) {
+			var index = source.indexOf(item);
+			var renderItem = React.createElement("p",{ },item);
+			return React.createElement(components_CustomDraggable,{ index : index, draggableId : item},renderItem);
+		};
+		var tmp = { droppableId : this.props.id};
+		var _this = this.state.source;
+		var result = new Array(_this.length);
+		var _g = 0;
+		var _g1 = _this.length;
+		while(_g < _g1) {
+			var i = _g++;
+			result[i] = renderItem(_this[i],_gthis.state.source);
+		}
+		var tmp1 = React.createElement(components_CustomDroppable,tmp,result);
+		return React.createElement(react_$beautiful_$dnd_DragDropContext,{ onDragEnd : onDragEnd},tmp1);
+	}
+});
+var components_CustomDraggable = function(props,context) {
+	React_Component.call(this,props,context);
+};
+components_CustomDraggable.__name__ = true;
+components_CustomDraggable.__super__ = React_Component;
+components_CustomDraggable.prototype = $extend(React_Component.prototype,{
+	render: function() {
+		var _gthis = this;
+		var getItemStyle = function(isDragging,draggableStyle) {
+			var style = { "userSelect" : "none", "padding" : "5px", "margin" : "0 0 5px 0", "background" : isDragging ? "lightgreen" : "grey"};
+			var res = Reflect.copy(style);
+			var _g = 0;
+			var _g1 = Reflect.fields(draggableStyle);
+			while(_g < _g1.length) {
+				var f = _g1[_g];
+				++_g;
+				res[f] = Reflect.field(draggableStyle,f);
+			}
+			return res;
+		};
+		var renderItem = function(provided,snapshot) {
 			var provided1 = provided.dragHandleProps;
 			var provided2 = provided.draggableProps;
 			var provided3 = provided.innerRef;
-			var renderItem = _gthis.getItemStyle(snapshot.isDragging,provided.draggableProps.style);
-			return React.createElement("div",Object.assign({ },provided1,provided2,{ ref : provided3, style : renderItem}),React.createElement("p",{ },item));
+			var renderItem = getItemStyle(snapshot.isDragging,provided.draggableProps.style);
+			return React.createElement("div",Object.assign({ },provided1,provided2,{ ref : provided3, style : renderItem}),_gthis.props.children);
 		};
-		var renderDrag = function(item,source) {
-			var index = source.indexOf(item);
-			return React.createElement(react_$beautiful_$dnd_Draggable,{ key : item, index : index, draggableId : item},function(provided,snapshot) {
-				return renderItem(provided,snapshot,item);
-			});
+		return React.createElement(react_$beautiful_$dnd_Draggable,{ key : this.props.draggableId, index : this.props.index, draggableId : this.props.draggableId},function(provided,snapshot) {
+			return renderItem(provided,snapshot);
+		});
+	}
+});
+var components_CustomDroppable = function(props,context) {
+	React_Component.call(this,props,context);
+};
+components_CustomDroppable.__name__ = true;
+components_CustomDroppable.__super__ = React_Component;
+components_CustomDroppable.prototype = $extend(React_Component.prototype,{
+	render: function() {
+		var _gthis = this;
+		var getListStyle = function(isDraggingOver) {
+			return { background : isDraggingOver ? "lightblue" : "lightgrey", padding : "5px", paddingBottom : isDraggingOver ? "70px" : "5px", width : 250};
 		};
-		var renderList = function(provided,snapshot,source) {
-			var provided1 = provided.droppableProps;
-			var provided2 = provided.innerRef;
-			var renderList = _gthis.getListStyle(snapshot.isDraggingOver);
-			return React.createElement("div",Object.assign({ },provided1,{ ref : provided2, style : renderList}),source.map(function(item) {
-				return renderDrag(item,source);
-			}));
+		var renderItem = function(provided,snapshot) {
+			var provided1 = provided.dragHandleProps;
+			var provided2 = provided.draggableProps;
+			var provided3 = provided.innerRef;
+			var renderItem = getListStyle(snapshot.isDraggingOver);
+			return React.createElement("div",Object.assign({ },provided1,provided2,{ ref : provided3, style : renderItem}),_gthis.props.children);
 		};
-		var renderDragDropContext = function(source) {
-			return React.createElement(react_$beautiful_$dnd_DragDropContext,{ onDragEnd : onDragEnd},React.createElement(react_$beautiful_$dnd_Droppable,{ key : _gthis.props.id, droppableId : _gthis.props.id},function(provided,snapshot) {
-				return renderList(provided,snapshot,source);
-			}));
-		};
-		var tmp;
-		if(this.state.source != null) {
-			return renderDragDropContext(this.state.source);
-		} else {
-			tmp = false;
-		}
-		return React.createElement("div",{ },tmp);
+		return React.createElement(react_$beautiful_$dnd_Droppable,{ key : this.props.droppableId, droppableId : this.props.droppableId},function(provided,snapshot) {
+			return renderItem(provided,snapshot);
+		});
 	}
 });
 var css_FlexFlow = {};
@@ -755,6 +777,10 @@ Array.__name__ = true;
 js_Boot.__toStr = ({ }).toString;
 components_App.displayName = "App";
 components_App.__fileName__ = "src/components/App.hx";
+components_CustomDraggable.displayName = "CustomDraggable";
+components_CustomDraggable.__fileName__ = "src/components/CustomDraggable.hx";
+components_CustomDroppable.displayName = "CustomDroppable";
+components_CustomDroppable.__fileName__ = "src/components/CustomDroppable.hx";
 css_FlexFlow.Row = "row";
 css_FlexFlow.RowReverse = "row-reverse";
 css_FlexFlow.Column = "column";
