@@ -1,11 +1,6 @@
-
-# -lib modular
 -lib react
 -lib react-types
--lib react_beautiful_dnd
--lib uuid
-#-D react_global
-#-D react_no_inline
+-lib react-beautiful-dnd
 
 -D react_hot
 -debug

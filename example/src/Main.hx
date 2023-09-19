@@ -10,8 +10,6 @@ import react_beautiful_dnd.Draggable;
 import react_beautiful_dnd.DraggableLocation;
 import react_beautiful_dnd.DropResult;
 
-import uuid.Uuid;
-
 private typedef Props = {
   var id: String;
 }
