@@ -1,4 +1,6 @@
 **/node_modules/
-example/.temp/
 
 react-beautiful-dnd.zip
+
+example/bin/*.js
+example/.temp/
