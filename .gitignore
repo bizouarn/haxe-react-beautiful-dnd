@@ -4,3 +4,5 @@ react-beautiful-dnd.zip
 
 example/bin/*.js
 example/.temp/
+
+*.map
