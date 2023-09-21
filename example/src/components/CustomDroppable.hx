@@ -17,7 +17,6 @@ class CustomDroppable extends ReactComponentOf<DroppableProps, {}> {
 		var getListStyle = (isDraggingOver:Bool) -> ({
 			background: isDraggingOver ? "lightblue" : "lightgrey",
 			padding: "5px",
-			paddingBottom: isDraggingOver ? "70px" : "5px",
 			width: 250
 		});
 
@@ -25,11 +24,11 @@ class CustomDroppable extends ReactComponentOf<DroppableProps, {}> {
 			return jsx(
 				<div
 					ref={provided.innerRef}
-					{...provided.draggableProps}
-					{...provided.dragHandleProps}
+					{...provided.droppableProps}
 					style={getListStyle(snapshot.isDraggingOver)}
 				>
 					{props.children}
+					{provided.placeholder}
 				</div>
 			);
 		}
