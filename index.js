@@ -243,14 +243,13 @@ components_CustomDroppable.prototype = $extend(React_Component.prototype,{
 	render: function() {
 		var _gthis = this;
 		var getListStyle = function(isDraggingOver) {
-			return { background : isDraggingOver ? "lightblue" : "lightgrey", padding : "5px", paddingBottom : isDraggingOver ? "70px" : "5px", width : 250};
+			return { background : isDraggingOver ? "lightblue" : "lightgrey", padding : "5px", width : 250};
 		};
 		var renderItem = function(provided,snapshot) {
-			var provided1 = provided.dragHandleProps;
-			var provided2 = provided.draggableProps;
-			var provided3 = provided.innerRef;
+			var provided1 = provided.droppableProps;
+			var provided2 = provided.innerRef;
 			var renderItem = getListStyle(snapshot.isDraggingOver);
-			return React.createElement("div",Object.assign({ },provided1,provided2,{ ref : provided3, style : renderItem}),_gthis.props.children);
+			return React.createElement("div",Object.assign({ },provided1,{ ref : provided2, style : renderItem}),_gthis.props.children,provided.placeholder);
 		};
 		return React.createElement(react_$beautiful_$dnd_Droppable,{ key : this.props.droppableId, droppableId : this.props.droppableId},function(provided,snapshot) {
 			return renderItem(provided,snapshot);
