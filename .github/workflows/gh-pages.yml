@@ -13,9 +13,9 @@ jobs:
     runs-on: ubuntu-latest
     # Tâches à effectuer, comme expliquées ci-dessus
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Setup node
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v4
       - uses: krdlab/setup-haxe@v1
         with:
           haxe-version: 4.2.4
