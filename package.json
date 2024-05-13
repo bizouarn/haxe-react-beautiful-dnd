@@ -9,7 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@types/react-beautiful-dnd": "^13.1.4",
+    "@types/react-beautiful-dnd": "^13.1.8",
     "react-beautiful-dnd": "^13.1.1"
   }
 }
