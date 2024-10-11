@@ -7,7 +7,7 @@ Generated with [dts2hx](https://github.com/haxiomic/dts2hx).
 ## Example
 [![Github pages](https://github.com/bizouarn/haxe-react-beautiful-dnd/actions/workflows/gh-pages.yml/badge.svg)](https://github.com/bizouarn/haxe-react-beautiful-dnd/actions/workflows/gh-pages.yml)  
 
-A simple example can be found in the [example](https://git.bizouarn.com/haxe-react-beautiful-dnd/) directory.
+A simple example can be found in the [example](https://bizouarn.com/haxe-react-beautiful-dnd/) directory.
 
 ## Contributing
 
